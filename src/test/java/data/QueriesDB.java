@@ -1,7 +1,9 @@
 package data;
 
 import com.github.javafaker.Faker;
+import lombok.Value;
 import lombok.val;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -51,5 +53,16 @@ public class QueriesDB {
             dataStmt.setString(3, passwordBdTwo);
             dataStmt.executeUpdate();
         }
+    }
+
+    @Value
+    public static class AuthInfo {
+        private String login;
+        private String password;
+    }
+
+    @Value
+    public static class VerificationCode {
+        private String code;
     }
 }

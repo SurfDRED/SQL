@@ -1,12 +1,12 @@
 package test;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.SelenideElement;
 import data.QueriesDB;
 import lombok.val;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import page.DashboardPage;
+import page.LoginPage;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,12 +15,7 @@ import static com.codeborne.selenide.Selenide.*;
 import static data.QueriesDB.*;
 
 public class LoginTest {
-    private SelenideElement UserLogin = $("[data-test-id=login] input");
-    private SelenideElement UserPassword = $("[data-test-id=password] input");
-    private SelenideElement btnUserClick = $("[data-test-id=password] input");
-    private SelenideElement UserCode = $("[data-test-id=code] input");
-    private SelenideElement btnUserVerify = $("[data-test-id=action-verify]");
-    private SelenideElement dashboard = $("[data-test-id=dashboard]");
+    private static DashboardPage dashboardPage;
     private String password = "";
 
     @BeforeAll
@@ -57,16 +52,15 @@ public class LoginTest {
                         password = "123qwerty";
                     }
                     open("http://localhost:9999");
-                    UserLogin.setValue(login);
-                    UserPassword.setValue(password);
-                    btnUserClick.click();
+                    val loginPage = new LoginPage();
+                    val authInfo = new QueriesDB.AuthInfo(login, password);
+                    val verificationPage = loginPage.validLogin(authInfo);
                     codeStmt.setString(1, login);
                     try (val code = codeStmt.executeQuery()) {
                         while (code.next()) {
                             val auth_code = code.getString("code");
-                            UserCode.setValue(auth_code);
-                            btnUserVerify.click();
-                            dashboard.shouldBe(Condition.visible);
+                            val verificationCode = new QueriesDB.VerificationCode(auth_code);
+                            dashboardPage = verificationPage.validVerify(verificationCode);
                         }
                     }
                 }
