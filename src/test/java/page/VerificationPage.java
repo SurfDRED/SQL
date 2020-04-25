@@ -13,8 +13,8 @@ public class VerificationPage {
     public VerificationPage() {
         codeField.shouldBe(Condition.visible);
     }
-    public DashboardPage validVerify(QueriesDB.VerificationCode verificationCode) {
-        codeField.setValue(verificationCode.getCode());
+    public DashboardPage validVerify(QueriesDB.CodeUser codeUser) {
+        codeField.setValue(codeUser.getAuth_code());
         verifyButton.click();
         return new DashboardPage();
     }

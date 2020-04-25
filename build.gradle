@@ -15,6 +15,7 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.5.2'
     testImplementation 'mysql:mysql-connector-java:8.0.18'
+    testImplementation 'commons-dbutils:commons-dbutils:1.7'
     testImplementation 'com.codeborne:selenide:5.3.1'
     testImplementation 'com.github.javafaker:javafaker:1.0.1'
     apply plugin: "io.freefair.lombok"
